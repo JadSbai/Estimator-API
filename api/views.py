@@ -17,7 +17,7 @@ from rest_framework.decorators import action
 def api_root(request, format=None):
     """Root of the API"""
     return Response({
-        'searches': reverse('make_search', request=request, format=format),
+        'searches': reverse('search_list', request=request, format=format),
     })
 
 
