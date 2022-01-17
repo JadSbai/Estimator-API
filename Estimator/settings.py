@@ -137,9 +137,9 @@ AUTH_USER_MODEL = 'api.User'
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1000000000000),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=100000),
     'ROTATE_REFRESH_TOKENS': True,
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=10000000000000)
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=100000)
 }
 
 # Settings for the Django REST framework
