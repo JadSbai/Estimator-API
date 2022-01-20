@@ -161,5 +161,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Activate django heroku
 if '/app' in os.environ['HOME']:
     import django_heroku
+    const_uri = os.environ['MONGODB_URI']
     django_heroku.settings(locals())
 
