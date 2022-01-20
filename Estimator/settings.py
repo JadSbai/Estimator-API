@@ -137,9 +137,9 @@ AUTH_USER_MODEL = 'api.User'
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=100000),
     'ROTATE_REFRESH_TOKENS': True,
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=15)
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=100000)
 }
 
 # Settings for the Django REST framework
@@ -161,6 +161,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Activate django heroku
 if '/app' in os.environ['HOME']:
     import django_heroku
-    const uri = os.environ['MONGODB_URI']
+    const_uri = os.environ['MONGODB_URI']
     django_heroku.settings(locals())
 
