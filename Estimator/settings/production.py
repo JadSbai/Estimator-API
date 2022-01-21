@@ -6,7 +6,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['dry-retreat-95860.herokuapp.com', 'www.dry-retreat-95860.herokuapp.com']
+ALLOWED_HOSTS = ['sbai-estimator-api.herokuapp.com', 'www.sbai-estimator-api.herokuapp.com']
 
 DATABASES = {
         'default': {
