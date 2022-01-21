@@ -18,13 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-j0yj%p0vn4)o*v)xxo@y*2%ht0efatb^3n#jh=08i=t)^d8(%s'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -81,17 +75,8 @@ WSGI_APPLICATION = 'Estimator.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# Mongo DB database (cluster) set up
-DATABASES = {
-    'default': {
-            'ENGINE': 'djongo',
-            'NAME': 'estimator_db',
-            'ENFORCE_SCHEMA': False,
-            'CLIENT': {
-                'host': 'mongodb+srv://Jad:ZORO@cluster0.q65kn.mongodb.net/test?authSource=admin&replicaSet=atlas-wk045q-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true'
-            },
-        }
-}
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -158,9 +143,5 @@ REST_FRAMEWORK = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Activate django heroku
-if '/app' in os.environ['HOME']:
-    import django_heroku
-    const_uri = os.environ['MONGODB_URI']
-    django_heroku.settings(locals())
+
 
