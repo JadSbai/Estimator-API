@@ -26,8 +26,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         
-    - name: Create mongoDB Docker container      
-      run: sudo docker run -d -p 27017:27017 mongo:latest
+    - name: Start MongoDB
+      uses: supercharge/mongodb-github-action@1.7.0
+      with:
+        mongodb-version: ${{ matrix.mongodb-version }}
       
     - name: Run Tests
       run: |
