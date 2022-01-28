@@ -17,7 +17,10 @@ from rest_framework.decorators import action
 def api_root(request, format=None):
     """Root of the API"""
     return Response({
-        'searches': reverse('search_list', request=request, format=format),
+        'Make a new search with POST, retrieve searches with GET': reverse('search_list', request=request, format=format),
+        'Sign up': reverse('sign_up', request=request, format=format),
+        'Login': reverse('login', request=request, format=format),
+        'Change password, where "1" is the id of the user': reverse('change_password', kwargs={'pk': 1}, request=request, format=format),
     })
 
 

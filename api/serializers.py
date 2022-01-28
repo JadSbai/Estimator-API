@@ -28,7 +28,8 @@ class SignUpSerializer(serializers.HyperlinkedModelSerializer):
             'password': {'validators': [RegexValidator(
                 regex=r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$',
                 message='Password must contain an uppercase character, a lowercase '
-                        'character and a number.')]}
+                        'character and a number.')], 'required': True},
+            'confirm_password': {'required': True}
         }
 
     def validate(self, attrs):
@@ -65,7 +66,9 @@ class PasswordSerializer(serializers.HyperlinkedModelSerializer):
             'new_password': {'validators': [RegexValidator(
                 regex=r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$',
                 message='Password must contain an uppercase character, a lowercase '
-                        'character and a number.')]}
+                        'character and a number.')], 'required': True},
+            'current_password': {'required': True},
+            'confirm _password': {'required': True}
         }
 
     def validate(self, attrs):
