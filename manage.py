@@ -10,7 +10,7 @@ def main():
         os.environ["DJANGO_SETTINGS_MODULE"] = os.environ.get("DJANGO_SETTINGS_MODULE")
 
     else:
-        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Estimator.settings.development")
+        os.environ["DJANGO_SETTINGS_MODULE"] = 'Estimator.settings.development'
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

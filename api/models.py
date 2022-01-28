@@ -96,20 +96,22 @@ class Provider(models.Model):
 class ProductManager(models.Manager):
     """Custom manager used for creation of products"""
 
-    def get_or_create_product(self, description, provider):
+    def get_or_create_product(self, description, provider_name):
         """Create a product according to Product model or retrieve existing product"""
 
         if not description:
             raise ValueError("Product must have a description")
-        if not provider:
-            raise ValueError("Product must have a provider")
+        if not provider_name:
+            raise ValueError("Product must have a provider_name")
+
+        provider = Provider.objects.get_or_create_provider(provider_name)
 
         if Product.objects.filter(description=description, provider=provider):
             return Product.objects.get(description=description, provider=provider)
         else:
             product = self.model()
             product.description = description
-            product.provider = Provider.objects.get_or_create_provider(provider)
+            product.provider = provider
             product.save(using=self._db)
             return product
 
@@ -155,7 +157,7 @@ class Result(models.Model):
 class SearchManager(models.Manager):
     """Custom manager used for creation of searches"""
 
-    def create_search(self, user, date, searched_product, is_buy, suggested_product_description, provider):
+    def create_search(self, user, date, searched_product, is_buy, suggested_product_description, provider_name):
         """Create a search object"""
 
         if not user:
@@ -172,10 +174,9 @@ class SearchManager(models.Manager):
         search.date = date
         search.searched_product = searched_product
         search.is_buy = is_buy
-        if suggested_product_description and provider:
+        if suggested_product_description and provider_name:
             search.result = Result.objects.get_or_create_result(
-                Product.objects.get_or_create_product(suggested_product_description,
-                                                      Provider.objects.get_or_create_provider(provider)))
+                Product.objects.get_or_create_product(suggested_product_description, provider_name))
         search.save(using=self._db)
         return search
 

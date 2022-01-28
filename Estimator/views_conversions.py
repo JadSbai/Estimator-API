@@ -1,5 +1,5 @@
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from api.views import SearchViewSet, ResultViewSet, ProductViewSet, UserViewSet, ProviderViewSet
+from rest_framework_simplejwt.views import TokenRefreshView
+from api.views import SearchViewSet, ResultViewSet, ProductViewSet, UserViewSet, ProviderViewSet, MyTokenObtainPairView
 
 search_list = SearchViewSet.as_view({
     'get': 'list',
@@ -47,8 +47,12 @@ sign_up = UserViewSet.as_view({
     'post': 'create',
 })
 
-login = TokenObtainPairView.as_view()
+login = MyTokenObtainPairView.as_view()
 login_refresh = TokenRefreshView.as_view()
+
+logout = UserViewSet.as_view({
+    'post': 'logout',
+})
 
 change_password = UserViewSet.as_view({
     'patch': 'set_password',
