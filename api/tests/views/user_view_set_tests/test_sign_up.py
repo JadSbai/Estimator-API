@@ -1,3 +1,4 @@
+import json
 
 from rest_framework.test import RequestsClient
 from django.urls import reverse
@@ -25,8 +26,11 @@ class MakeSearchViewTestCase(APITestCase):
         self.assertEqual(before + 1, after)
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
         self.assertTrue(User.objects.filter(email=sign_up_data['email']).exists())
-        michel = User.objects.get(email=sign_up_data['email'])
-        self.assertTrue(michel.is_authenticated)
+        result = json.loads(resp.content)
+        self.assertIn('access_token', result)
+        self.assertIn('refresh_token', result)
+        self.assertIn('user_id', result)
+
 
     def test_sign_up_with_unmatching_password(self):
         before = User.objects.count()

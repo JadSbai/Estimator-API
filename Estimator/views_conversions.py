@@ -57,3 +57,7 @@ logout = UserViewSet.as_view({
 change_password = UserViewSet.as_view({
     'patch': 'set_password',
 })
+
+check_access_token = UserViewSet.as_view({
+    'get': 'check_access_token',
+})

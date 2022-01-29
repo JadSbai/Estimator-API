@@ -32,12 +32,15 @@ class MakeSearchViewTestCase(APITestCase):
         searches_after = get_user_searches(self.client, self.user_token, self.user)
         num_after = searches_after['count']
 
-        self.assertIn("url", result['result']['suggested_product']['description'])
-        self.assertIn("price", result['result']['suggested_product']['description'])
+        self.assertIn("url", result)
+        self.assertIn("price", result)
+        self.assertIn("searched_product", result)
+        self.assertIn("provider", result)
+        self.assertIn("date", result)
         self.assertEqual(num_before + 1, num_after)
 
     def test_make_new_search_with_empty_string(self):
-        resp = self.client.post(url=f'http://localhost:8000/searches/', params={
+        resp = self.client.post(url=f'http://localhost:8000/searches/', data={
             'data': '',
             'date': timezone.now().isoformat()
         }, headers={'Authorization': f'Bearer {self.user_token}'})

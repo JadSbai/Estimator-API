@@ -129,5 +129,10 @@ class UserViewSet(viewsets.ModelViewSet):
         self.perform_update(serializer)
         return Response({'message': 'password successfully changed'}, status=status.HTTP_200_OK)
 
+    @action(detail=True, methods=['get'], permission_classes=[IsAuthenticated])
+    def check_access_token(self, request):
+        return Response({'message': 'The access token is valid'}, status=status.HTTP_200_OK)
+
+
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
