@@ -2,6 +2,7 @@ from api.models import User, Product, Provider, Result, Search
 from django.core.validators import RegexValidator
 from rest_framework import serializers
 from django.contrib.auth.hashers import check_password
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -143,4 +144,14 @@ class SearchSerializer(serializers.HyperlinkedModelSerializer):
                                             is_buy=validated_data['is_buy'],
                                             suggested_product_description=
                                             validated_data['result']['suggested_product']['description'],
-                                            provider=validated_data['result']['suggested_product']['provider']['name'])
+                                            provider_name=validated_data['result']['suggested_product']['provider']['name'])
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        # The default result (access/refresh tokens)
+        data = super(CustomTokenObtainPairSerializer, self).validate(attrs)
+        # Custom data you want to include
+        data.update({'user_id': self.user.id})
+        # and everything else you want to send in the response
+        return data

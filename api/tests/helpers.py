@@ -24,13 +24,13 @@ def get_user_searches(client, token, user=None):
 
 
 def make_new_search(client, token):
-    resp = client.post(url=f'http://localhost:8000/searches/', params={
+    resp = client.post(url=f'http://localhost:8000/searches/', data={
         'data': 'MacbookPro',
         'date': timezone.now().isoformat()
     }, headers={'Authorization': f'Bearer {token}'})
 
     while resp.status_code == status.HTTP_200_OK:
-        resp = client.post(url=f'http://localhost:8000/searches/', params={
+        resp = client.post(url=f'http://localhost:8000/searches/', data={
             'data': 'MacbookPro',
             'date': timezone.now().isoformat()
         }, headers={'Authorization': f'Bearer {token}'})

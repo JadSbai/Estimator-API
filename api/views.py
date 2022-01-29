@@ -1,7 +1,7 @@
 import json
 from api.models import User, Product, Result, Search, Provider
-from api.serializers import UserSerializer, ProductSerializer, SearchSerializer, ResultSerializer, ProviderSerializer,\
-    SignUpSerializer, PasswordSerializer
+from api.serializers import UserSerializer, ProductSerializer, SearchSerializer, ResultSerializer, ProviderSerializer, \
+    SignUpSerializer, PasswordSerializer, CustomTokenObtainPairSerializer
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 import requests
@@ -11,16 +11,19 @@ from rest_framework.decorators import api_view
 from rest_framework.reverse import reverse
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import action
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 @api_view(['GET'])
 def api_root(request, format=None):
     """Root of the API"""
     return Response({
-        'Make a new search with POST, retrieve searches with GET': reverse('search_list', request=request, format=format),
+        'Make a new search with POST, retrieve searches with GET': reverse('search_list', request=request,
+                                                                           format=format),
         'Sign up': reverse('sign_up', request=request, format=format),
         'Login': reverse('login', request=request, format=format),
-        'Change password, where "1" is the id of the user': reverse('change_password', kwargs={'pk': 1}, request=request, format=format),
+        'Change password, where "1" is the id of the user': reverse('change_password', kwargs={'pk': 1},
+                                                                    request=request, format=format),
     })
 
 
@@ -32,8 +35,8 @@ class SearchViewSet(viewsets.ModelViewSet):
     filterset_fields = ['user']
 
     def create(self, request, *args, **kwargs):
-        product = request.query_params['data']
-        date = request.query_params['date']
+        product = request.data['data']
+        date = request.data['date']
 
         if product == "":
             return Response({'custom_message': "You have not entered a valid a search"},
@@ -67,8 +70,14 @@ class SearchViewSet(viewsets.ModelViewSet):
             serializer = SearchSerializer(data=data, context={'request': request})
             serializer.is_valid(raise_exception=True)
             self.perform_create(serializer)
+            description = json.loads(serializer.data['result']['suggested_product']['description'])
+            final_data = {'searched_product': serializer.data['searched_product'],
+                          'price': description['price_string'],
+                          'url': description['url'],
+                          'provider': serializer.data['result']['suggested_product']['provider']['name'],
+                          'date': serializer.data['date']}
             headers = self.get_success_headers(serializer.data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+            return Response(data=final_data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class ResultViewSet(viewsets.ModelViewSet):
@@ -107,6 +116,7 @@ class UserViewSet(viewsets.ModelViewSet):
         data = {
             'access_token': str(refresh.access_token),
             'refresh_token': str(refresh),
+            'user_id': new_user.id
         }
         headers = self.get_success_headers(serializer.data)
         return Response(data, status=status.HTTP_201_CREATED, headers=headers)
@@ -118,3 +128,11 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response({'message': 'password successfully changed'}, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['get'], permission_classes=[IsAuthenticated])
+    def check_access_token(self, request):
+        return Response({'message': 'The access token is valid'}, status=status.HTTP_200_OK)
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer

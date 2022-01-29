@@ -6,7 +6,7 @@ from django.contrib.auth.hashers import check_password
 from api.models import User
 from rest_framework.test import APITestCase
 from api.tests.factories import UserFactory
-from api.tests.helpers import authenticate, make_new_search, get_user_searches
+from api.tests.helpers import authenticate
 
 
 class ChangeProfileViewTestCase(APITestCase):

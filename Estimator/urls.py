@@ -18,7 +18,8 @@ from api import views
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.contrib import admin
 from Estimator.views_conversions import sign_up, login, login_refresh, search_list, user_list, result_list,\
-    product_list, provider_list, get_result, get_product, get_provider, get_user, get_search, change_password
+    product_list, provider_list, get_result, get_product, get_provider, get_user, get_search, change_password, \
+    check_access_token
 
 
 urlpatterns = format_suffix_patterns([
@@ -27,6 +28,7 @@ urlpatterns = format_suffix_patterns([
     path('sign-up/', sign_up, name='sign_up'),
     path('login/', login, name='login'),
     path('login/refresh/', login_refresh, name='login_refresh'),
+    path('access-token-verification/', check_access_token, name='check_access_token'),
     path('searches/', search_list, name='search_list'),
     path('results/', result_list, name='result_list'),
     path('products/', product_list, name='product_list'),
